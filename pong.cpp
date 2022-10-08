@@ -1,41 +1,55 @@
 #include "raylib.h"
 
+struct Ball
+{
+    float x, y;
+    float speedX, speedY;
+    float radius;
+
+    void Draw()
+    {
+        DrawCircle((int) x, (int) y, radius, WHITE);
+    }
+};
+
 int main(){
     InitWindow(800, 600, "Pong");
     // Set refresh rate for my monitor
     SetWindowState(FLAG_VSYNC_HINT);
+
+    Ball ball;
     // Get screen width + height & divide by 2. 2.0f helps DrawCircle method to read as int
-    float ball_X = GetScreenWidth() / 2.0f;
-    float ball_Y = GetScreenHeight() / 2.0f;
+    ball.x = GetScreenWidth() / 2.0f;
+    ball.y = GetScreenHeight() / 2.0f;
     // Set Radius at 5
-    float ball_radius = 5;
+    ball.radius = 5;
     // Set ball_speed variables
-    float ball_speed_X = 300;
-    float ball_speed_Y = 300;
+    ball.speedX = 300;
+    ball.speedY = 300;
 
     while (!WindowShouldClose()){
-        // take ball_X and add some motion to it. Multiply GetFrameTime() to speed up ball motion in relation to the monitor's speed.
-        ball_X += ball_speed_X * GetFrameTime();
-        // same to ball_Y
-        ball_Y += ball_speed_Y * GetFrameTime();
+        // take ball.x and add some motion to it. Multiply GetFrameTime() to speed up ball motion in relation to the monitor's speed.
+        ball.x += ball.speedX * GetFrameTime();
+        // same to ball.y
+        ball.y += ball.speedY * GetFrameTime();
         // Set ball to bounce off top of screen
-        if (ball_Y < 0){
-            ball_Y = 0;
-            ball_speed_Y *= -1;
+        if (ball.y < 0){
+            ball.y = 0;
+            ball.speedY *= -1;
         }
-        // If ball_Y is greater than screen height (The top of the screen)
-        if(ball_Y > GetScreenHeight()){
-            // Set ball_Y equal to screen height to stop ball from sticking to bottom of the screen
-            ball_Y = GetScreenHeight();
-            // Then reverse the ball_speed_Y direction, multiply ball_speed_Y by -1
-            ball_speed_Y *= -1; 
+        // If ball.y is greater than screen height (The top of the screen)
+        if(ball.y > GetScreenHeight()){
+            // Set ball.y equal to screen height to stop ball from sticking to bottom of the screen
+            ball.y = GetScreenHeight();
+            // Then reverse the ball.speedY direction, multiply ball.speedY by -1
+            ball.speedY *= -1; 
         }
 
 
         BeginDrawing();
             ClearBackground(BLACK);
             // Draw circle , Colour object WHITE
-            DrawCircle((int)ball_X, (int)ball_Y, ball_radius, WHITE);
+            ball.Draw();
             // Draw Left Paddle Rectangle, Subtract half of screen height (2 - 50) to center paddle position on Y axis
             DrawRectangle(50, GetScreenHeight() / 2 - 50, 10, 100, WHITE);
             // Draw Right Paddle Rectangle, Subtract half of screen height (2 - 50) to center paddle position on Y axis
