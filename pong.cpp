@@ -71,6 +71,20 @@ int main(){
             // Then reverse the ball.speedY direction, multiply ball.speedY by -1
             ball.speedY *= -1; 
         }
+        //  Left Paddle Controls
+        if (IsKeyDown(KEY_W)){
+            leftPaddle.y -= leftPaddle.speed * GetFrameTime();
+        }
+        if (IsKeyDown(KEY_S)){
+            leftPaddle.y += leftPaddle.speed * GetFrameTime();
+        }
+        //  Right Paddle Controls
+        if (IsKeyDown(KEY_UP)){
+            rightPaddle.y -= rightPaddle.speed * GetFrameTime();
+        }
+        if (IsKeyDown(KEY_DOWN)){
+            rightPaddle.y += rightPaddle.speed * GetFrameTime();
+        }
 
 
         BeginDrawing();
