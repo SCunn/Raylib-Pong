@@ -12,6 +12,19 @@ struct Ball
     }
 };
 
+struct Paddle
+{
+    float x, y;
+    float speed;
+    float width, height;
+
+    void Draw()
+    {
+        DrawRectangle(x - width / 2, y - height / 2, width, height, WHITE);
+    }
+};
+
+
 int main(){
     InitWindow(800, 600, "Pong");
     // Set refresh rate for my monitor
@@ -24,8 +37,22 @@ int main(){
     // Set Radius at 5
     ball.radius = 5;
     // Set ball_speed variables
-    ball.speedX = 300;
+    ball.speedX = 100;
     ball.speedY = 300;
+
+    Paddle leftPaddle;
+    leftPaddle.x = 50;
+    leftPaddle.y = GetScreenHeight() / 2;
+    leftPaddle.width = 10;
+    leftPaddle.height = 100;
+    leftPaddle.speed = 500;
+
+    Paddle rightPaddle;
+    rightPaddle.x = GetScreenWidth() - 50;
+    rightPaddle.y = GetScreenHeight() / 2;
+    rightPaddle.width = 10;
+    rightPaddle.height = 100;
+    rightPaddle.speed = 500;
 
     while (!WindowShouldClose()){
         // take ball.x and add some motion to it. Multiply GetFrameTime() to speed up ball motion in relation to the monitor's speed.
@@ -50,12 +77,8 @@ int main(){
             ClearBackground(BLACK);
             // Draw circle , Colour object WHITE
             ball.Draw();
-            // Draw Left Paddle Rectangle, Subtract half of screen height (2 - 50) to center paddle position on Y axis
-            DrawRectangle(50, GetScreenHeight() / 2 - 50, 10, 100, WHITE);
-            // Draw Right Paddle Rectangle, Subtract half of screen height (2 - 50) to center paddle position on Y axis
-            // DrawRectangle(740, GetScreenHeight() /2 - 50, 10, 100, WHITE);
-            // Draw Right Paddle Rectangle, Get screen width subtract by 50 and 10 
-            DrawRectangle(GetScreenWidth() - 50 - 10, GetScreenHeight() / 2 - 50, 10, 100, WHITE);
+            leftPaddle.Draw();
+            rightPaddle.Draw();
             // Draw Frames per second
             DrawFPS(10, 10);
         EndDrawing();
