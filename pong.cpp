@@ -18,9 +18,14 @@ struct Paddle
     float speed;
     float width, height;
 
+    Rectangle GetRect()
+    {
+        return Rectangle { x - width / 2, y - height / 2, 10, 100 };
+    }
+
     void Draw()
     {
-        DrawRectangle(x - width / 2, y - height / 2, width, height, WHITE);
+        DrawRectangleRec(GetRect(), WHITE);
     }
 };
 
@@ -37,7 +42,7 @@ int main(){
     // Set Radius at 5
     ball.radius = 5;
     // Set ball_speed variables
-    ball.speedX = 100;
+    ball.speedX = 300;
     ball.speedY = 300;
 
     Paddle leftPaddle;
@@ -71,6 +76,7 @@ int main(){
             // Then reverse the ball.speedY direction, multiply ball.speedY by -1
             ball.speedY *= -1; 
         }
+
         //  Left Paddle Controls
         if (IsKeyDown(KEY_W)){
             leftPaddle.y -= leftPaddle.speed * GetFrameTime();
@@ -86,6 +92,24 @@ int main(){
             rightPaddle.y += rightPaddle.speed * GetFrameTime();
         }
 
+        // Left Paddle collison logic
+        if (CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, leftPaddle.GetRect() ))
+        {
+            // Keep ball from losing velocity on collision
+            if (ball.speedX < 0)
+            {
+                ball.speedX *= -1;
+            }
+        }
+        // Right Paddle collison logic
+        if (CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, rightPaddle.GetRect() ))
+        {
+            // Keep ball from losing velocity on collision 
+            if (ball.speedX > 0)
+            {
+                ball.speedX *= -1;
+            }
+        }
 
         BeginDrawing();
             ClearBackground(BLACK);
