@@ -94,11 +94,14 @@ int main(){
 
         // Left Paddle collison logic
         if (CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, leftPaddle.GetRect() ))
-        {
+        { 
             // Keep ball from losing velocity on collision
             if (ball.speedX < 0)
             {
-                ball.speedX *= -1;
+                ball.speedX *= -1.1f; // 1.1f speeds up the ball every time it is hit
+                // determine how fast the ball moves when hit on the top or the bottom of the paddle 
+                // Normalize the value between negative 1 & positive 1, then multiply by speedX of the ball
+                ball.speedY = (ball.y - leftPaddle.y) / (leftPaddle.height / 2) * ball.speedX; 
             }
         }
         // Right Paddle collison logic
@@ -107,7 +110,11 @@ int main(){
             // Keep ball from losing velocity on collision 
             if (ball.speedX > 0)
             {
-                ball.speedX *= -1;
+                ball.speedX *= -1.1f; // 1.1f speeds up the ball every time it is hit
+                // determine how fast the ball moves when hit on the top or the bottom of the paddle 
+                // Normalize the value between negative 1 & positive 1, then multiply by speedX of the ball
+                // Make ball.speedX negative on the right paddle
+                ball.speedY = (ball.y - rightPaddle.y) / (rightPaddle.height / 2) * - ball.speedX;
             }
         }
 
