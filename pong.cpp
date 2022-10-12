@@ -59,6 +59,8 @@ int main(){
     rightPaddle.height = 100;
     rightPaddle.speed = 500;
 
+    const char* winnerText = nullptr;
+
     while (!WindowShouldClose()){
         // take ball.x and add some motion to it. Multiply GetFrameTime() to speed up ball motion in relation to the monitor's speed.
         ball.x += ball.speedX * GetFrameTime();
@@ -118,12 +120,34 @@ int main(){
             }
         }
 
+        // Declare Winner
+        if(ball.x < 0){
+            winnerText = "Right Player Wins!";
+        }
+
+        if(ball.x > GetScreenWidth()){
+            winnerText = "Left Player Wins!";
+        }
+        // Restart Match
+        if (winnerText && IsKeyPressed(KEY_SPACE)){
+            ball.x = GetScreenWidth() / 2;
+            ball.y = GetScreenHeight() / 2;
+            ball.speedX = 300;
+            ball.speedY = 300;
+            winnerText = nullptr;
+        }
+
         BeginDrawing();
             ClearBackground(BLACK);
             // Draw circle , Colour object WHITE
             ball.Draw();
             leftPaddle.Draw();
             rightPaddle.Draw();
+
+            if (winnerText){
+                int textWidth = MeasureText(winnerText, 60);
+                DrawText(winnerText, GetScreenWidth() / 2 - textWidth / 2, GetScreenHeight() / 2 - 30, 60, YELLOW);
+            }
             // Draw Frames per second
             DrawFPS(10, 10);
         EndDrawing();
